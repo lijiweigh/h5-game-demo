@@ -1,5 +1,5 @@
 <template>
-    <div class="jiu-gong-ge">
+    <div class="jiu-gong-ge" ref="main">
         <div class="wraper">
             <div class="box" :class="['box' + index, {'active':activeBox == index}]" :ref="'box'+ index" v-for="(item, index) in 9" :key="index">{{index + 1}}</div>
         </div>
@@ -46,7 +46,6 @@ export default {
         this.$refs.box4[0].innerHTML = "start"
         this.$refs.box4[0].style.color = "red"
         this.$refs.box4[0].addEventListener("click", this.handler)
-        
     },
     methods: {
         // 模拟从接口获取数据
@@ -112,6 +111,10 @@ export default {
                     this.activeBox = this.sort[this.curBoxIndex]
                     resolve()
                 }, time);
+
+                // this.$once("hook:beforeDestroy", () => {
+                //     clearTimeout(this.id)
+                // })
             })
 
         },
@@ -177,6 +180,10 @@ export default {
             }
         }
     },
+    // 销毁之前清除定时器
+    beforeDestroy(){
+        clearTimeout(this.id)
+    }
 }
 </script>
 
